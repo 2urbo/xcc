@@ -18,16 +18,6 @@ namespace FirstFloor.Xcc
         [Required]
         public string DefinedSymbols { get; set; }
         /// <summary>
-        /// The required ApplicationDefinitions parameter.
-        /// </summary>
-        [Required]
-        public ITaskItem[] ApplicationDefinitions { get; set; }
-        /// <summary>
-        /// The required Pages parameter.
-        /// </summary>
-        [Required]
-        public ITaskItem[] Pages { get; set; }
-        /// <summary>
         /// The required EmbeddedXamlResources parameter.
         /// </summary>
         [Required]
@@ -45,16 +35,6 @@ namespace FirstFloor.Xcc
         /// </value>
         public bool RemoveIgnorableContent { get; set; }
 
-        /// <summary>
-        /// The output NewApplicationDefinitions parameter.
-        /// </summary>
-        [Output]
-        public ITaskItem[] NewApplicationDefinitions { get; set; }
-        /// <summary>
-        /// The output NewPages parameter.
-        /// </summary>
-        [Output]
-        public ITaskItem[] NewPages { get; set; }
         /// <summary>
         /// The output NewEmbeddedXamlResources parameter.
         /// </summary>
@@ -81,8 +61,6 @@ namespace FirstFloor.Xcc
 
                 var generatedFiles = new List<ITaskItem>();
 
-                NewApplicationDefinitions = ProcessFiles(ApplicationDefinitions, generatedFiles, preprocessor).ToArray();
-                NewPages = ProcessFiles(Pages, generatedFiles, preprocessor).ToArray();
                 NewEmbeddedXamlResources = ProcessFiles(EmbeddedXamlResources, generatedFiles, preprocessor).ToArray();
 
                 GeneratedFiles = generatedFiles.ToArray();
