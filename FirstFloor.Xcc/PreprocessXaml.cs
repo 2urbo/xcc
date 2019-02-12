@@ -4,16 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 
 namespace FirstFloor.Xcc
 {
     /// <summary>
     /// The MSBuild task for preprocessing conditional compilation symbols in XAML files.
     /// </summary>
-    public class PreprocessXaml
-        : Task
+    public class PreprocessXaml : Task
     {
         /// <summary>
         /// The required DefinedSymbols parameter.
@@ -80,15 +77,15 @@ namespace FirstFloor.Xcc
             try {
                 Log.LogMessage(MessageImportance.Normal, "XCC > DefinedSymbols: {0}", string.Join(",", this.DefinedSymbols));
 
-                var preprocessor = new XamlPreprocessor(this.DefinedSymbols, this.RemoveIgnorableContent);
+                var preprocessor = new XamlPreprocessor(DefinedSymbols, RemoveIgnorableContent);
 
                 var generatedFiles = new List<ITaskItem>();
 
-                this.NewApplicationDefinitions = ProcessFiles(this.ApplicationDefinitions, generatedFiles, preprocessor).ToArray();
-                this.NewPages = ProcessFiles(this.Pages, generatedFiles, preprocessor).ToArray();
-                this.NewEmbeddedXamlResources = ProcessFiles(this.EmbeddedXamlResources, generatedFiles, preprocessor).ToArray();
+                NewApplicationDefinitions = ProcessFiles(ApplicationDefinitions, generatedFiles, preprocessor).ToArray();
+                NewPages = ProcessFiles(Pages, generatedFiles, preprocessor).ToArray();
+                NewEmbeddedXamlResources = ProcessFiles(EmbeddedXamlResources, generatedFiles, preprocessor).ToArray();
 
-                this.GeneratedFiles = generatedFiles.ToArray();
+                GeneratedFiles = generatedFiles.ToArray();
 
                 return true;
             }
@@ -128,7 +125,7 @@ namespace FirstFloor.Xcc
                 targetRelativePath = Path.GetFileName(targetRelativePath);
             }
 
-            var targetPath = Path.Combine(this.OutputPath, targetRelativePath);
+            var targetPath = Path.Combine(OutputPath, targetRelativePath);
 
             TaskItem result = null;
 

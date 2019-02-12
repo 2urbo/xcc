@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -17,9 +15,9 @@ namespace FirstFloor.Xcc
     {
         private static readonly XName LineNumberName = "__line";
 
-        private string[] definedSymbols;
-        private bool removeIgnorableContent;
-        private Dictionary<string, bool> conditionResults = new Dictionary<string, bool>();
+        private readonly string[] _definedSymbols;
+        private readonly bool _removeIgnorableContent;
+        private readonly Dictionary<string, bool> _conditionResults = new Dictionary<string, bool>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XamlPreprocessor"/> class.
@@ -28,8 +26,8 @@ namespace FirstFloor.Xcc
         /// <param name="removeIgnorableContent">Whether to remove ignorable content.</param>
         public XamlPreprocessor(string definedSymbols, bool removeIgnorableContent)
         {
-            this.definedSymbols = (definedSymbols ?? string.Empty).Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
-            this.removeIgnorableContent = removeIgnorableContent;
+            _definedSymbols = (definedSymbols ?? string.Empty).Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+            _removeIgnorableContent = removeIgnorableContent;
         }
 
         /// <summary>
@@ -104,7 +102,7 @@ namespace FirstFloor.Xcc
 
             // lookup ignorable namespace names (excluding condition namespaces) that should be removed
             var removeNamespaceNames = new string[0];
-            if (this.removeIgnorableContent && ignorablePrefixes != null) {
+            if (_removeIgnorableContent && ignorablePrefixes != null) {
                 removeNamespaceNames = (from a in xamlDoc.Root.Attributes()
                                         where a.IsNamespaceDeclaration && !IsCondition(a.Value) && ignorablePrefixes.Contains(a.Name.LocalName)
                                         select a.Value).ToArray();
@@ -116,8 +114,7 @@ namespace FirstFloor.Xcc
 
             while (stack.Count > 0) {
                 var element = stack.Pop();
-                bool elementUpdated;
-                if (ProcessElement(element, removeNamespaceNames, out elementUpdated)) {
+                if (ProcessElement(element, removeNamespaceNames, out bool elementUpdated)) {
                     foreach (var e in element.Elements()) {
                         stack.Push(e);
                     }
@@ -143,7 +140,7 @@ namespace FirstFloor.Xcc
                 updated = true;
             }
             
-            if (this.removeIgnorableContent) {
+            if (_removeIgnorableContent) {
                 if (ignorableAttribute != null) {
                     // remove mc:Ignorable attribute entirely
                     ignorableAttribute.Remove();
@@ -185,8 +182,7 @@ namespace FirstFloor.Xcc
             if (node.NodeType == XmlNodeType.Whitespace || node.NodeType == XmlNodeType.SignificantWhitespace) {
                 return true;
             }
-            var text = node as XText;
-            return text != null && text.Value.Trim().Length == 0;
+            return node is XText text && text.Value.Trim().Length == 0;
         }
 
         /// <summary>
@@ -217,8 +213,8 @@ namespace FirstFloor.Xcc
                 if (originalLineAttr == null) {
                     continue;
                 }
-                int originalLineNumber;
-                if (int.TryParse((string)originalLineAttr, NumberStyles.Integer, CultureInfo.InvariantCulture, out originalLineNumber)) {
+
+                if (int.TryParse((string)originalLineAttr, NumberStyles.Integer, CultureInfo.InvariantCulture, out int originalLineNumber)) {
                     if (originalLineNumber > lineInfo.LineNumber + offset) {
                         var count = originalLineNumber - lineInfo.LineNumber - offset;
                         var whitespace = new XText(string.Join(Environment.NewLine, new string[count + 1]));
@@ -300,7 +296,7 @@ namespace FirstFloor.Xcc
         private bool? Include(XName name, string[] removeNamespaceNames)
         {
             // first check if ignorable content should be removed
-            if (this.removeIgnorableContent && removeNamespaceNames.Contains(name.NamespaceName)) {
+            if (_removeIgnorableContent && removeNamespaceNames.Contains(name.NamespaceName)) {
                 return false;
             }
 
@@ -312,17 +308,16 @@ namespace FirstFloor.Xcc
             }
 
             // try condition result cache
-            bool result;
-            if (!this.conditionResults.TryGetValue(condition, out result)) {
+            if (!_conditionResults.TryGetValue(condition, out bool result)) {
                 if (condition.StartsWith("!")) {
                     var conditionName = condition.Substring(1);
-                    result = !this.definedSymbols.Any(s => s == conditionName);
+                    result = !_definedSymbols.Any(s => s == conditionName);
                 }
                 else {
-                    result = this.definedSymbols.Any(s => s == condition);
+                    result = _definedSymbols.Any(s => s == condition);
                 }
 
-                this.conditionResults[condition] = result;
+                _conditionResults[condition] = result;
             }
             return result;
         }
