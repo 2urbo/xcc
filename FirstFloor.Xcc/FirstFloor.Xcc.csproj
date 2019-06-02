@@ -19,7 +19,6 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <ReleaseVersion>1.0.10</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
