@@ -1,26 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>xcc</id>
-    <version>1.0.9</version>
+    <id>xcc-xf</id>
+    <version>1.0.10</version>
     <title>XAML Conditional Compilation</title>
-    <authors>First Floor Software</authors>
-    <owners>First Floor Software</owners>
-    <projectUrl>https://github.com/firstfloorsoftware/xcc</projectUrl>
+    <authors>First Floor Software, 2urbo</authors>
+    <owners></owners>
+    <licenseUrl>https://github.com/2urbo/xcc/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/2urbo/xcc</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A XAML preprocessor adding conditional compilation support to XAML files</description>
-    <releaseNotes>1.0.9: Fixes incorrect SHA256 nupkg hash
-1.0.8: Fixed failing target invocation in Xamarin projects
-1.0.7: Added configurable support for removing ignorable content
-1.0.6: Fixed conditional elements moved to incorrect xmlns
-1.0.5: Fixed Xamarin Forms precompile step not being executed
-1.0.4: Added support for WPF projects
-1.0.3: Added support for Visual C++ projects
-1.0.2: Added support for Xamarin Forms
-1.0.1: Fixed trailing content bug
-    </releaseNotes>
-    <copyright>Copyright 2014-2016 First Floor Software</copyright>
-    <tags>XAML, preprocessor, conditional compilation</tags>
+    <releaseNotes>Reduced functionality to support Xamarin Forms projects only</releaseNotes>
+    <copyright>2014-2016 First Floor Software, 2019 2urbo</copyright>
+    <tags>xamarin forms, xamarin, XAML, preprocessor, conditional compilation</tags>
+    <dependencies>
+        <group>
+            <dependency id="Xamarin.Forms" version="3.0.0.446417" />
+        </group>
+    </dependencies>
   </metadata>
   <files>
     <file src="..\Targets\Xcc.targets" target="build" />
