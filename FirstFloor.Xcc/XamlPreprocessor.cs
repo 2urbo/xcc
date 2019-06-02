@@ -26,7 +26,7 @@ namespace FirstFloor.Xcc
         /// <param name="removeIgnorableContent">Whether to remove ignorable content.</param>
         public XamlPreprocessor(string definedSymbols, bool removeIgnorableContent)
         {
-            _definedSymbols = (definedSymbols ?? string.Empty).Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+            _definedSymbols = (definedSymbols ?? string.Empty).Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
             _removeIgnorableContent = removeIgnorableContent;
         }
 
@@ -114,7 +114,7 @@ namespace FirstFloor.Xcc
 
             while (stack.Count > 0) {
                 var element = stack.Pop();
-                if (ProcessElement(element, removeNamespaceNames, out bool elementUpdated)) {
+                if (ProcessElement(element, removeNamespaceNames, out var elementUpdated)) {
                     foreach (var e in element.Elements()) {
                         stack.Push(e);
                     }
@@ -129,7 +129,7 @@ namespace FirstFloor.Xcc
             //  * Xamarin Forms crashes on custom condition namespaces
             var removedPrefixes = new List<string>();
             foreach (var attr in from a in xamlDoc.Root.Attributes().ToArray()          // ToArray since we are modifying the attribute collection
-                                 where a.Name == XName.Get("ProcessContent", Xmlns.MarkupCompatibility) || (a.IsNamespaceDeclaration && (IsCondition(a.Value) || removeNamespaceNames.Contains(a.Value)))
+                                 where a.Name == XName.Get("ProcessContent", Xmlns.MarkupCompatibility) || a.IsNamespaceDeclaration && (IsCondition(a.Value) || removeNamespaceNames.Contains(a.Value))
                                  select a) {
                 attr.Remove();
 
@@ -171,7 +171,6 @@ namespace FirstFloor.Xcc
             if (updated) {
                 // re-read xdocument and adjust xelements so they are on original line numbers
                 return AdjustLineNumbers(xamlDoc);
-
             }
             // not updated
             return null;
@@ -214,7 +213,7 @@ namespace FirstFloor.Xcc
                     continue;
                 }
 
-                if (int.TryParse((string)originalLineAttr, NumberStyles.Integer, CultureInfo.InvariantCulture, out int originalLineNumber)) {
+                if (int.TryParse((string)originalLineAttr, NumberStyles.Integer, CultureInfo.InvariantCulture, out var originalLineNumber)) {
                     if (originalLineNumber > lineInfo.LineNumber + offset) {
                         var count = originalLineNumber - lineInfo.LineNumber - offset;
                         var whitespace = new XText(string.Join(Environment.NewLine, new string[count + 1]));
@@ -274,9 +273,7 @@ namespace FirstFloor.Xcc
 
                         // make sure any existing attribute with this name is removed
                         var sameNameAttribute = element.Attributes().FirstOrDefault(a => a.Name == attributeName);
-                        if (sameNameAttribute != null) {
-                            sameNameAttribute.Remove();
-                        }
+                        sameNameAttribute?.Remove();
 
                         element.Add(new XAttribute(attributeName, attribute.Value));
                     }
@@ -308,10 +305,10 @@ namespace FirstFloor.Xcc
             }
 
             // try condition result cache
-            if (!_conditionResults.TryGetValue(condition, out bool result)) {
+            if (!_conditionResults.TryGetValue(condition, out var result)) {
                 if (condition.StartsWith("!")) {
                     var conditionName = condition.Substring(1);
-                    result = !_definedSymbols.Any(s => s == conditionName);
+                    result = _definedSymbols.All(s => s != conditionName);
                 }
                 else {
                     result = _definedSymbols.Any(s => s == condition);
@@ -324,10 +321,7 @@ namespace FirstFloor.Xcc
 
         private static string GetCondition(XName name)
         {
-            if (IsCondition(name.NamespaceName)) {
-                return name.NamespaceName.Substring(10);
-            }
-            return null;
+            return IsCondition(name.NamespaceName) ? name.NamespaceName.Substring(10) : null;
         }
 
         private static bool IsCondition(string value)

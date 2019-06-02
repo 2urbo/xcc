@@ -55,7 +55,7 @@ namespace FirstFloor.Xcc
         public override bool Execute()
         {
             try {
-                Log.LogMessage(MessageImportance.Normal, "XCC > DefinedSymbols: {0}", string.Join(",", this.DefinedSymbols));
+                Log.LogMessage(MessageImportance.Normal, "XCC > DefinedSymbols: {0}", string.Join(",", DefinedSymbols));
 
                 var preprocessor = new XamlPreprocessor(DefinedSymbols, RemoveIgnorableContent);
 
