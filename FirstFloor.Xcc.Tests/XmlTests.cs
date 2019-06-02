@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
-namespace FirstFloor.Xcc.Test
+namespace FirstFloor.Xcc.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class XmlTests
     {
-        [TestMethod]
+        [Test]
         public void TestInputShouldNotChange()
         {
-            var xml =  @"
+            var xml = @"
 <Test xmlns:d=""http://schemas.microsoft.com/expression/blend/2008""
       xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""
       mc:Ignorable=""d"">
@@ -18,7 +18,7 @@ namespace FirstFloor.Xcc.Test
             TestXml(null, false, xml, xml);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemoveIgnorableContent()
         {
             var xml = @"
@@ -39,7 +39,7 @@ namespace FirstFloor.Xcc.Test
             TestXml(null, true, xml, expected);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRootNotInDefaultNamespace()
         {
             var xml = @"
@@ -66,7 +66,7 @@ namespace FirstFloor.Xcc.Test
             TestXml("DEBUG", false, xml, expected);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRootNotInDefaultNamespaceWithNoDefaultNamespace()
         {
             var xml = @"
@@ -91,7 +91,7 @@ namespace FirstFloor.Xcc.Test
             TestXml("DEBUG", false, xml, expected);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRootNotInDefaultNamespaceWithDefaultNamespaceRemoveIgnorableContent()
         {
             var xml = @"
@@ -118,7 +118,7 @@ namespace FirstFloor.Xcc.Test
             TestXml("DEBUG", true, xml, expected);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRootNotInDefaultNamespaceWithNoDefaultNamespaceRemoveIgnorableContent()
         {
             var xml = @"

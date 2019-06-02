@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Globalization;
+﻿using System.Globalization;
+using NUnit.Framework;
 
-namespace FirstFloor.Xcc.Test
+namespace FirstFloor.Xcc.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ConditionTests
     {
-        [TestMethod]
+        [Test]
         public void TestButtonBackgroundWin81()
         {
             TestXaml("WINDOWS_APP",
@@ -15,7 +14,7 @@ namespace FirstFloor.Xcc.Test
                 "<Button Background=\"Green\" />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestButtonBackgroundWP81()
         {
             TestXaml("WINDOWS_PHONE_APP",
@@ -23,7 +22,7 @@ namespace FirstFloor.Xcc.Test
                 "<Button Background=\"Red\" />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestButtonBackgroundDebug()
         {
             TestXaml("DEBUG",
@@ -31,7 +30,7 @@ namespace FirstFloor.Xcc.Test
                 "<Button Background=\"Yellow\" />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestButtonBackgroundRelease()
         {
             TestXaml("!DEBUG",
@@ -39,15 +38,15 @@ namespace FirstFloor.Xcc.Test
                 "<Button Background=\"Yellow\" />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestNoUpdates()
         {
             TestXaml("WINDOWS_APP",
                 "<Grid><Button /></Grid>",
                 "<Grid><Button /></Grid>");
         }
-        
-        [TestMethod]
+
+        [Test]
         public void TestGridWin81()
         {
             TestXaml("WINDOWS_APP",
@@ -55,7 +54,7 @@ namespace FirstFloor.Xcc.Test
                 "<Grid />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridWP81()
         {
             TestXaml("WINDOWS_PHONE_APP",
@@ -63,7 +62,7 @@ namespace FirstFloor.Xcc.Test
                 "");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridDebug()
         {
             TestXaml("DEBUG",
@@ -71,7 +70,7 @@ namespace FirstFloor.Xcc.Test
                 "");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridRelease()
         {
             TestXaml("!DEBUG",
@@ -79,7 +78,7 @@ namespace FirstFloor.Xcc.Test
                 "");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridContentWin81()
         {
             TestXaml("WINDOWS_APP",
@@ -87,7 +86,7 @@ namespace FirstFloor.Xcc.Test
                 "<Grid><Button /></Grid>");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridContentWP81()
         {
             TestXaml("WINDOWS_PHONE_APP",
@@ -95,7 +94,7 @@ namespace FirstFloor.Xcc.Test
                 "");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridContentDebug()
         {
             TestXaml("DEBUG",
@@ -103,7 +102,7 @@ namespace FirstFloor.Xcc.Test
                 "");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridContentRelease()
         {
             TestXaml("!DEBUG",
@@ -111,7 +110,7 @@ namespace FirstFloor.Xcc.Test
                 "");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridsWin81Debug()
         {
             TestXaml("WINDOWS_APP;DEBUG",
@@ -119,7 +118,7 @@ namespace FirstFloor.Xcc.Test
                 "<Grid x:Name=\"win81\" /><Grid x:Name=\"debug\" /><Grid />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridsWin81Release()
         {
             TestXaml("WINDOWS_APP;!DEBUG",
@@ -127,7 +126,7 @@ namespace FirstFloor.Xcc.Test
                 "<Grid x:Name=\"win81\" /><Grid /><Grid />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridsWP81Debug()
         {
             TestXaml("WINDOWS_PHONE_APP;DEBUG",
@@ -135,7 +134,7 @@ namespace FirstFloor.Xcc.Test
                 "<Grid x:Name=\"wp81\" /><Grid x:Name=\"debug\" /><Grid />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGridsWP81Release()
         {
             TestXaml("WINDOWS_PHONE_APP;!DEBUG",
@@ -143,7 +142,7 @@ namespace FirstFloor.Xcc.Test
                 "<Grid x:Name=\"wp81\" /><Grid /><Grid />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestNestedWin81Debug()
         {
             TestXaml("WINDOWS_APP;DEBUG",
@@ -151,7 +150,7 @@ namespace FirstFloor.Xcc.Test
                 "<Grid><Grid><Button /></Grid></Grid>");
         }
 
-        [TestMethod]
+        [Test]
         public void TestNestedWP81Debug()
         {
             TestXaml("WINDOWS_PHONE_APP;DEBUG",
@@ -159,7 +158,7 @@ namespace FirstFloor.Xcc.Test
                 "");
         }
 
-        [TestMethod]
+        [Test]
         public void TestNestedWin81Release()
         {
             TestXaml("WINDOWS_APP;!DEBUG",
@@ -167,7 +166,7 @@ namespace FirstFloor.Xcc.Test
                 "<Grid />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestNestedWP81Release()
         {
             TestXaml("WINDOWS_PHONE_APP;!DEBUG",
@@ -175,7 +174,7 @@ namespace FirstFloor.Xcc.Test
                 "");
         }
 
-        [TestMethod]
+        [Test]
         public void TestNestedAttributeWin81Debug()
         {
             TestXaml("WINDOWS_APP;DEBUG",
@@ -183,7 +182,7 @@ namespace FirstFloor.Xcc.Test
                 "<Grid Visibility=\"Collapsed\" />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestNestedAttributeWP81Debug()
         {
             TestXaml("WINDOWS_PHONE_APP;DEBUG",
@@ -191,7 +190,7 @@ namespace FirstFloor.Xcc.Test
                 "");
         }
 
-        [TestMethod]
+        [Test]
         public void TestNestedAttributeWin81Release()
         {
             TestXaml("WINDOWS_APP;!DEBUG",
@@ -199,14 +198,14 @@ namespace FirstFloor.Xcc.Test
                 "<Grid />");
         }
 
-        [TestMethod]
+        [Test]
         public void TestNestedAttributeWP81Release()
         {
             TestXaml("WINDOWS_PHONE_APP;DEBUG",
                 "<win81:Grid debug:Visibility=\"Collapsed\" />",
                 "");
         }
-        [TestMethod]
+        [Test]
         public void TestAdControlWin81Debug()
         {
             TestXaml("WINDOWS_APP;DEBUG",
@@ -224,7 +223,7 @@ namespace FirstFloor.Xcc.Test
 ");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAdControlWP81Debug()
         {
             TestXaml("WINDOWS_PHONE_APP;DEBUG",
